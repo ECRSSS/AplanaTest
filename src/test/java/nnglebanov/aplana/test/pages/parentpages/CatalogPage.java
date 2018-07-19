@@ -70,8 +70,10 @@ public abstract class CatalogPage extends BasePage {
      * @param item Товар на странице, только для елементов BASE_ITEM_LOCATOR
      * @return название товара
      */
-    public String getTitleOfItem(WebElement item) {
-        return item.findElement(By.cssSelector(getBaseItemLocator()+">a")).getAttribute("title");
+    public String getTitleOfItem(WebElement item) throws Exception {
+        By by=By.cssSelector(getBaseItemLocator()+">a");
+        DriverWaitUtils.waitFor(by,10);
+        return item.findElement(by).getAttribute("title");
     }
 
     public String getDescOfFirstItemAfterFiltering() {

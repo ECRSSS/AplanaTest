@@ -19,7 +19,7 @@ public class MarketTelevisionsPage extends CatalogPage {
     @Override
     public String getBaseItemLocator()
     {
-        return "div.n-snippet-card2";
+        return "div.n-snippet-card2__title";
     }
 
     @Override
