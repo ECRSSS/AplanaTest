@@ -41,7 +41,8 @@ public class AplanaSuite {
 
         //работа со страницей раздела телевизоров
         MarketTelevisionsPage marketTelevisionsPage = new MarketTelevisionsPage();
-        marketTelevisionsPage.switchNumOfElementsOnPageTo12();
+        marketTelevisionsPage.switchNumOfElementsOnPage(0);
+
         marketTelevisionsPage.sendKeysToPriceFromFilter("20000");
         marketTelevisionsPage.lifeIsGoodFilterCheckbox.click();
         marketTelevisionsPage.samsungFilterCheckbox.click();
@@ -73,7 +74,7 @@ public class AplanaSuite {
 
         //работа со страницей раздела наушников
         MarketHeadPhonesPage marketHeadphonesPage = new MarketHeadPhonesPage();
-        marketHeadphonesPage.switchNumOfElementsOnPageTo12();
+        marketHeadphonesPage.switchNumOfElementsOnPage(0);
         marketHeadphonesPage.beatsFilterCheckbox.click();
         marketHeadphonesPage.waitForH1TitleContains("Beats");
         marketHeadphonesPage.sendKeysToPriceFromFilter("5000");
@@ -81,7 +82,7 @@ public class AplanaSuite {
         String nameOfFirstItemOnPage = marketHeadphonesPage
                 .getTitleOfItem(marketHeadphonesPage.getFirstItemOnPage());
         System.out.println(nameOfFirstItemOnPage);
-        marketHeadphonesPage.sendKeysToSearchField(nameOfFirstItemOnPage + Keys.ENTER);
+        marketHeadphonesPage.sendKeysToSearchField(nameOfFirstItemOnPage);
 
         WebElement firstItem = marketHeadphonesPage.getFirstItemOnPage();
         String nameOfFirstItemAfterFilter=marketHeadphonesPage.getDescOfFirstItemAfterFiltering();

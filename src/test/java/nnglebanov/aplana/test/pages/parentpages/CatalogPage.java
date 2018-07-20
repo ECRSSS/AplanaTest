@@ -3,6 +3,7 @@ package nnglebanov.aplana.test.pages.parentpages;
 import nnglebanov.aplana.base.BasePage;
 import nnglebanov.aplana.utils.DriverWaitUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -43,8 +44,8 @@ public abstract class CatalogPage extends BasePage {
         });
 
     }
-    public void waitForH1TitleContains(String title)
-    {
+
+    public void waitForH1TitleContains(String title) {
         WebDriverWait webDriverWait = new WebDriverWait(driver, 10);
         webDriverWait.until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver driver) {
@@ -70,10 +71,8 @@ public abstract class CatalogPage extends BasePage {
      * @param item Товар на странице, только для елементов BASE_ITEM_LOCATOR
      * @return название товара
      */
-    public String getTitleOfItem(WebElement item) throws Exception {
-        By by=By.cssSelector(getBaseItemLocator()+">a");
-        DriverWaitUtils.waitFor(by,10);
-        return item.findElement(by).getAttribute("title");
+    public String getTitleOfItem(WebElement item) {
+        return item.findElement(By.cssSelector(getBaseItemLocator() + ">a")).getAttribute("title");
     }
 
     public String getDescOfFirstItemAfterFiltering() {
@@ -81,10 +80,18 @@ public abstract class CatalogPage extends BasePage {
         return driver.findElement(By.cssSelector("div.n-snippet-cell2:first-child div.n-snippet-cell2__title>a")).getAttribute("title");
     }
 
-    public void switchNumOfElementsOnPageTo12() throws Exception {
+    /**
+     * @param index 0-12 1-48
+     */
+    public void switchNumOfElementsOnPage(int index) throws Exception {
         numOfElementsOnPageButton.click();
-        By elements12 = By.cssSelector("div.popup div.select__list>div:first-child");
-        DriverWaitUtils.waitForClickable(elements12, 5);
+        By elements12;
+        if (index == 0) {
+            elements12 = By.cssSelector("div.popup div.select__list>div:first-child");
+        } else {
+            elements12 = By.cssSelector("div.popup div.select__list>div:last-child");
+        }
+        DriverWaitUtils.waitFor(elements12, 5);
         WebElement element = driver.findElement(elements12);
         element.click();
         waitForItemsRefreshed();
@@ -96,6 +103,6 @@ public abstract class CatalogPage extends BasePage {
     }
 
     public void sendKeysToSearchField(String keys) {
-        searchField.sendKeys(keys);
+        searchField.sendKeys(keys+Keys.ENTER);
     }
 }

@@ -10,6 +10,7 @@ import nnglebanov.aplana.driverfactory.enums.Browsers;
 import nnglebanov.aplana.driverfactory.enums.Environment;
 import nnglebanov.aplana.test.pages.*;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 public class ScenarioStepsDefinitions {
@@ -48,6 +49,18 @@ public class ScenarioStepsDefinitions {
         //работа со страницей раздела электроники
         MarketElectronicsPage marketElectronicsPage = new MarketElectronicsPage();
         marketElectronicsPage.moveToTelevisions();
+    }
+
+    @When("^i move to headphones$")
+    public void moveToHeadphones() throws Exception {
+        MarketElectronicsPage marketElectronicsPage = new MarketElectronicsPage();
+        marketElectronicsPage.moveToHeadphones();
+    }
+
+    @When("^i click on Beats filter$")
+    public void clickOnBeats() {
+        MarketHeadPhonesPage marketHeadPhonesPage = new MarketHeadPhonesPage();
+        marketHeadPhonesPage.beatsFilterCheckbox.click();
     }
 
     @When("^i change num of items on page to (.+)$")
@@ -89,16 +102,45 @@ public class ScenarioStepsDefinitions {
         marketTelevisionsPage.sendKeysToSearchField(firstItemTitle + Keys.ENTER);
     }
 
+    @When("^i get name of first headphones item and send it to search field$")
+    public void getNameOfFirstItem() {
+        MarketHeadPhonesPage marketHeadPhonesPage = new MarketHeadPhonesPage();
+        firstItemTitle = marketHeadPhonesPage
+                .getTitleOfItem(marketHeadPhonesPage.getFirstItemOnPage());
+        marketHeadPhonesPage.sendKeysToSearchField(firstItemTitle);
+    }
+
     @Then("^titles is equals$")
     public void checkTitles() {
         MarketItemPage marketItemPage = new MarketItemPage();
         Assert.assertEquals(marketItemPage.getTitle(), firstItemTitle); //проверка, что названия эквивалентны
     }
 
-    @Then("^num of elements on page is (.+) now$")
-    public void check12ItemsOnPage(String n) {
+    @Then("^num of elements on tv page is (.+) now$")
+    public void waitBeforeItemsOnTVPageEquals12(String n) {
         int num = Integer.parseInt(n);
         MarketTelevisionsPage marketTelevisionsPage = new MarketTelevisionsPage();
-        Assert.assertEquals(marketTelevisionsPage.getItemsOnPage().size(), 12); //проверка, что количество элементов=12
+        Assert.assertEquals(marketTelevisionsPage.getItemsOnPage().size(), num);
+    }
+
+    @Then("^wait before is h1 on page contains (.+)$")
+    public void waitForH1equals(String title) {
+        MarketHeadPhonesPage marketHeadPhonesPage = new MarketHeadPhonesPage();
+        marketHeadPhonesPage.waitForH1TitleContains(title);
+    }
+
+    @Then("^num of elements on headphones page is (.+) now$")
+    public void waitBeforeItemsOnHeadphonesPageEquals12(String n) {
+        int num = Integer.parseInt(n);
+        MarketHeadPhonesPage marketHeadPhonesPage = new MarketHeadPhonesPage();
+        Assert.assertEquals(marketHeadPhonesPage.getItemsOnPage().size(), num);
+    }
+
+    @Then("^check first item name$")
+    public void checkFirstItemNames() {
+        MarketHeadPhonesPage marketHeadphonesPage=new MarketHeadPhonesPage();
+        WebElement firstItem = marketHeadphonesPage.getFirstItemOnPage();
+        String nameOfFirstItemAfterFilter=marketHeadphonesPage.getDescOfFirstItemAfterFiltering();
+        Assert.assertEquals(nameOfFirstItemAfterFilter,firstItemTitle);
     }
 }
